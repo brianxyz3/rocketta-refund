@@ -3,12 +3,18 @@ import { toast } from "react-toastify";
 import { addAdminComment } from "../controller/apiController";
 
 
-const CommentForm = ({ id, updateComments, isActiveInvestigation }) => {
+const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
     const [formData, setFormData] = useState({comment: ""});
+    const headerObj = {
+        authorization: user?.token,
+        id: user?.id,
+        admin: user?.isAdmin,
+        "Content-Type": "application/json",
+    }
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
-        const res = await addAdminComment(id, formData).catch((err) => console.log(err));
+        const res = await addAdminComment(id, formData, headerObj).catch((err) => console.log(err));
         if (!res.status == 200) toast.error("Something went wrong. Try again.");
         updateComments(formData);
         setFormData({ comment: "" });

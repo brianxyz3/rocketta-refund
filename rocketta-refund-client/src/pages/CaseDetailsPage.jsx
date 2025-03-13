@@ -14,13 +14,18 @@ const CaseDetailsPage = () => {
     const [fileData, setFileData] = useState([]);
     const [comments, setComments] = useState([]);
 
+    const headerObj = {
+        authorization: currentUser?.token,
+        id: currentUser?.id,
+        admin: currentUser?.isAdmin,
+        "Content-Type": "application/json",
+    }
+
     useEffect(() => {        
         if(!currentUser?.isAdmin) navigate("/");
         const getFile = async () => {
-            const res = await getFileData(id);
-            setComments([...res.adminComment]);
-            console.log("ran effect again");
-            
+            const res = await getFileData(id, headerObj);
+            setComments([...res.adminComment]);            
             return setFileData({...res});
         }
         getFile();
@@ -35,7 +40,7 @@ const CaseDetailsPage = () => {
     }
     
     const openInvestigation = async () => {
-        const res = await updateCaseFile(id, {isActiveInvestigation: true}).catch((err) => console.log(err));
+        const res = await updateCaseFile(id, {isActiveInvestigation: true}, headerObj).catch((err) => console.log(err));
         if(!res.status == 200) toast.error("Something went wrong. Try again.");
         setFileData((currData) => (
             {...currData, isActiveInvestigation: true}
@@ -44,7 +49,7 @@ const CaseDetailsPage = () => {
     }
     
     const closeCase = async () => {
-        const res = await updateCaseFile(id, {isActiveInvestigation: false, isClosed: true}).catch((err) => console.log(err));
+        const res = await updateCaseFile(id, {isActiveInvestigation: false, isClosed: true}, headerObj).catch((err) => console.log(err));
         if(!res.status == 200) toast.error("Something went wrong. Try again.");
         setFileData((currData) => (
             { ...currData, isActiveInvestigation: false, isClosed: true }
@@ -53,7 +58,7 @@ const CaseDetailsPage = () => {
     }
     
     const reOpenCase = async () => {
-        const res = await updateCaseFile(id, {isActiveInvestigation: true, isClosed: false}).catch((err) => console.log(err));
+        const res = await updateCaseFile(id, {isActiveInvestigation: true, isClosed: false}, headerObj).catch((err) => console.log(err));
         if(!res.status == 200) toast.error("Something went wrong. Try again.");
         setFileData((currData) => (
             { ...currData, isActiveInvestigation: true, isClosed: false }
@@ -117,7 +122,7 @@ const CaseDetailsPage = () => {
                         </div>
                             {/*Add Agent's Comment  */}
                             <div className="bg-gray-300 p-3 rounded-lg shadow-md mx-3 mt-6">
-                              <CommentForm id={id} updateComments={updateComments} isActiveInvestigation={fileData.isActiveInvestigation}/>
+                              <CommentForm id={id} updateComments={updateComments} isActiveInvestigation={fileData.isActiveInvestigation} user={currentUser}/>
                             </div>
 
                             <div className="bg-white max-h-64 overflow-auto p-2 mx-1 rounded-lg shadow-md mt-4">

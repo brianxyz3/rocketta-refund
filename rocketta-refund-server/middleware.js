@@ -70,6 +70,8 @@ const checkUserAuthentication = (req, res, next) => {
 
 const checkUserAuthorization = async (req, res, next) => {
   try {
+    console.log(req.headers);
+    
     if (req.headers?.admin == "true") {
       console.log("inside");
 

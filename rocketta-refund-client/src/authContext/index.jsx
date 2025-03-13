@@ -19,12 +19,13 @@ const AuthProvider = ({children}) => {
 const updateUser = async () => {
     const getUserEmail = await cookieStore.get("userEmail");
     const getUserId = await cookieStore.get("userId");
+    const getUserToken = await cookieStore.get("token");
     const getUserPerm = await cookieStore.get("isAdmin");
     if (getUserEmail && getUserId) {
         if (getUserPerm.value == "true") {
-            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, isAdmin: true });
+            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, token: getUserToken.value, isAdmin: true });
         } else if (getUserPerm.value == "false") {
-            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, isAdmin: false });
+            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, token: getUserToken.value, isAdmin: false });
         }
         setUserLoggedIn(true);
     }

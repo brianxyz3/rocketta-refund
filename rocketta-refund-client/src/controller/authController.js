@@ -1,8 +1,6 @@
 import {
   registerUser,
   loginUser,
-  registerAdmin,
-  updateUserPermission,
 } from "../controller/apiController";
 
 const aDay = 24 * 60 * 60 * 1000;
@@ -11,16 +9,6 @@ const signUpWithEmailAndPassword = async (details) => {
   const newUser = await registerUser(details);
   await initializeUser(newUser);
   return newUser;
-};
-
-const addAdminWithEmailAndPassword = async (details) => {
-  const newAdmin = await registerAdmin(details);
-  return newAdmin;
-};
-
-const addAdminWithExistingUser = async (details) => {
-  const newAdmin = await updateUserPermission(details);
-  return newAdmin;
 };
 
 const logInWithEmailAndPassword = async (details) => {
@@ -74,6 +62,4 @@ export {
   signUpWithEmailAndPassword,
   logInWithEmailAndPassword,
   signOut,
-  addAdminWithEmailAndPassword,
-  addAdminWithExistingUser,
 };

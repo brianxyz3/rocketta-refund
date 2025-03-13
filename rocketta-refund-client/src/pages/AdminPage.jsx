@@ -10,10 +10,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { addAdminWithEmailAndPassword, addAdminWithExistingUser } from "../controller/authController";
 import AddAdmin from "../components/AddAdmin";
 import { useNavigate } from "react-router";
 import { useAuth } from "../authContext";
+import { registerAdmin, updateUserPermission } from "../controller/apiController";
 
 
 const AdminPage = () => {
@@ -22,6 +22,12 @@ const AdminPage = () => {
   const {currentUser} = useAuth();
   const navigate = useNavigate();
 
+  const headerObj = {
+    authorization: currentUser?.token,
+    id: currentUser?.id,
+    admin: currentUser?.isAdmin,
+    "Content-Type": "application/json",
+  }
 
   const {
     register,
@@ -65,7 +71,7 @@ const AdminPage = () => {
     try {
       if (data.password === data.confirmPassword) {
         const user = { ...data, isAdmin: true };
-        const newAdmin = await addAdminWithEmailAndPassword(user);
+        const newAdmin = await registerAdmin(user, headerObj);
 
         if (newAdmin.id) {
           toast.success("Admin Successfully Registered");
@@ -82,7 +88,7 @@ const AdminPage = () => {
   const handleUpdateUserPerm = async (data) => {
     try {
       const user = { ...data };
-      const newAdmin = await addAdminWithExistingUser(user);
+      const newAdmin = await updateUserPermission(user, headerObj);
 
       if (newAdmin.permissionStatus) {
           toast.success("Admin Permission Added")

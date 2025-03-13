@@ -21,11 +21,18 @@ const CasesPage = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
+    const headerObj = {
+        authorization: currentUser?.token,
+        id: currentUser?.id,
+        admin: currentUser?.isAdmin,
+        "Content-Type": "application/json",
+    }
+
     useEffect(() => {
         if (!currentUser?.isAdmin) navigate("/");
         console.log("Ran useEffect");   
         const onLoad = async () => {
-            const files = await getCaseFiles();
+            const files = await getCaseFiles(headerObj);
             return setCases(files);
         }
         onLoad();

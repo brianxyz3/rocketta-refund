@@ -1,7 +1,3 @@
-const token = await cookieStore.get("token");
-const userId = await cookieStore.get("userId");
-const auth = await cookieStore.get("isAdmin");
-
 const submitCaseFile = async (newCase) => {
   try {
     const res = await fetch("/api/newCase", {
@@ -18,16 +14,11 @@ const submitCaseFile = async (newCase) => {
   }
 };
 
-const getCaseFiles = async () => {
+const getCaseFiles = async (headerObj) => {
   try {
     const res = await fetch("/api/cases", {
       method: "GET",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
     });
     const data = await res.json();
     return data;
@@ -36,16 +27,11 @@ const getCaseFiles = async () => {
   }
 };
 
-const getFileData = async (id) => {
+const getFileData = async (id, headerObj) => {
   try {
     const res = await fetch(`/api/cases/${id}`, {
       method: "GET",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
     });
     const data = await res.json();
     return data;
@@ -70,16 +56,11 @@ const registerUser = async (newUser) => {
   }
 };
 
-const registerAdmin = async (newUser) => {
+const registerAdmin = async (newUser, headerObj) => {
   try {
     const res = await fetch("/api/registerAdmin", {
       method: "POST",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
       body: JSON.stringify(newUser),
     });
     const data = await res.json();
@@ -89,17 +70,12 @@ const registerAdmin = async (newUser) => {
   }
 };
 
-const updateUserPermission = async (newUser) => {
+const updateUserPermission = async (user, headerObj) => {
   try {
     const res = await fetch("/api/updateUserPermission", {
       method: "PUT",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
+      headers: headerObj,
+      body: JSON.stringify(user),
     });
     const data = await res.json();
     return data;
@@ -108,16 +84,11 @@ const updateUserPermission = async (newUser) => {
   }
 };
 
-const updateCaseFile = async (id, newInfo) => {
+const updateCaseFile = async (id, newInfo, headerObj) => {
   try {
     const res = await fetch(`/api/cases/${id}`, {
       method: "PUT",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
       body: JSON.stringify(newInfo),
     });
     const data = await res.json();
@@ -127,16 +98,11 @@ const updateCaseFile = async (id, newInfo) => {
   }
 };
 
-const addAdminComment = async (id, newComment) => {
+const addAdminComment = async (id, newComment, headerObj) => {
   try {
     const res = await fetch(`/api/comments/${id}`, {
       method: "POST",
-      headers: {
-        authorization: token?.value,
-        id: userId?.value,
-        admin: auth.value,
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
       body: JSON.stringify(newComment),
     });
     const data = await res.json();
