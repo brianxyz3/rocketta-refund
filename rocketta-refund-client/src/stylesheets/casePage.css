@@ -1,0 +1,153 @@
+.cases_page {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 0.25fr 0.7fr 2fr;
+    row-gap: 10px;
+    grid-template-areas:
+        "title title title title"
+        "content1 content1 content2 content2"
+        "table table table table"
+    ;
+}
+
+.table_title {
+    grid-area: title;
+}
+
+.content1 {
+    grid-area: content1;
+}
+
+.content2 {
+    grid-area: content2;
+}
+
+.table {
+    grid-area: table;
+}
+
+.cases_analysis {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.cases_analysis .pie_chart{
+    width: 90px;
+    border-radius: inherit;
+    aspect-ratio: inherit;
+    background-color: aliceblue;
+}
+
+.cases_analysis::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 180px;
+    aspect-ratio: inherit;
+    border-radius: inherit;
+    background: conic-gradient(green var(--closedCases), #dbdb12 var(--activeCases), #dbdb12 calc(var(--activeCases) + var(--closedCases)), red calc(var(--activeCases) + var(--closedCases)), red calc(100% - (var(--activeCases) + var(--closedCases))));
+}
+
+.closed_case, .open_case, .active_case {
+    position: relative;
+}
+
+.closed_case::before,
+.open_case::before, .active_case::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 25%;
+    width: 10px;
+    border-radius: 2px;
+    aspect-ratio: 1/1;
+}
+
+.closed_case::before {
+    background-color: green;
+}
+
+.open_case::before {
+    background-color: red;
+}
+
+.active_case::before {
+    background-color: #dbdb12;
+}
+
+thead th,
+tbody td {
+    text-wrap: nowrap;
+    overflow-x: scroll;
+}
+
+thead tr {
+    border: 0 solid transparent;
+}
+
+thead th:nth-child(1),
+td:nth-child(1) {
+    width: 10%;
+}
+
+thead th:nth-child(2) {
+    width: 10%;
+}
+
+thead th:nth-child(3),
+td:nth-child(3) {
+    width: 15%;
+}
+
+thead th:nth-child(4) {
+    width: 15%;
+}
+
+thead th:nth-child(5) {
+    width: 40%;
+}
+
+thead th:nth-child(6) {
+    width: 10%;
+}
+th:nth-child(odd),td:nth-child(odd) {
+    border: 0 0 2px solid black;
+}
+tr:nth-child(even) {
+    background-color: #b7d7fe;
+}
+
+@media only screen and (max-width: 640px)  {
+    .cases_page {
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.2fr 0.7fr 0.7fr 2fr;
+        grid-template-areas:
+            "title"
+            "content1"
+            "content2"
+            "table"
+        ;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .cases_analysis .pie_chart {
+        width: 110px;
+    }
+
+    .cases_analysis::after {
+        width: 220px;
+    }
+
+    .closed_case::before,
+    .open_case::before, .active_case::before {
+        width: 15px;
+        left: -4px;
+    }
+}

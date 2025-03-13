@@ -1,0 +1,23 @@
+svg{
+    fill: #A0A6BA;
+    cursor: pointer;
+}
+
+.partner_one:hover {
+    fill: rgb(250, 185, 99);
+}
+
+.partner_two:hover{
+    fill: rgb(182, 182, 250);
+}
+
+.partner_three:hover {
+    fill: rgb(250, 235, 215);
+}
+
+@media screen and (max-width:576px) {
+    svg {
+        max-width: 60px;
+        height: auto;
+    }
+}

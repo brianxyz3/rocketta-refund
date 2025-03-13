@@ -1,0 +1,115 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+:root {
+    --WIDTH: 500px;
+    --SHADOW-HEIGHT: 10px;
+}
+
+.carousel {
+    position: relative;
+}
+
+.carousel_inner {
+    justify-self: center;
+    align-items: center;
+    max-width: var(--WIDTH);
+    box-shadow: 0 var(--SHADOW-HEIGHT) 0 0 #fff;
+    background: #fff;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+}
+
+.carousel_item {
+    min-width: var(--WIDTH);
+    animation: slider 30s infinite;
+    scroll-snap-align: start;
+}
+
+.carousel_inner:hover .carousel_item {
+    animation-play-state: paused;
+}
+.carousel img {
+    min-width: 33.33%;
+}
+.carousel_nav {
+    display: flex;
+    gap: 1rem;
+    position: absolute;
+    bottom: -0.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel_nav a {
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: #808080;
+    border-radius: 50%;
+    transition: opacity 250ms linear;
+}
+
+.carousel_nav a:hover {
+    background-color: #fff;
+        box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.8), 0 0 0 2px rgb(128, 128, 128, 0.5), 0 0 0 5px rgb(128, 128, 128, 0.2);
+        transition: all 250ms linear;
+}
+
+@media only screen and (max-width: 760px) {
+    :root {
+        --WIDTH: 300px;
+    }
+
+    .carousel_nav a {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+}
+
+@keyframes slider {
+    0% {
+        transform: translateX(0px);
+    }
+
+    10% {
+        transform: translateX(calc(var(--WIDTH) * -1));
+    }
+
+    20% {
+        transform: translateX(calc(var(--WIDTH) * -1));
+    }
+
+    30% {
+        transform: translateX(calc(var(--WIDTH) * -2));
+    }
+
+    40% {
+        transform: translateX(calc(var(--WIDTH) * -2));
+    }
+
+    50% {
+        transform: translateX(calc(var(--WIDTH) * -2));
+    }
+
+    60% {
+        transform: translateX(calc(var(--WIDTH) * -3));
+    }
+
+    70% {
+        transform: translateX(calc(var(--WIDTH) * -3));
+    }
+
+    80% {
+        transform: translateX(calc(var(--WIDTH) * -3));
+    }
+
+    90% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}

@@ -1,0 +1,11 @@
+.nav_popup::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: inherit;
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    clip-path: path("M 5,0 L 10,10 L 0,10 L 5,0 Z");
+}
