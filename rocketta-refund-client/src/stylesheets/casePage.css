@@ -2,7 +2,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 0.25fr 0.7fr 2fr;
+    grid-template-rows: 0.1fr 0.3fr 2fr;
     row-gap: 10px;
     grid-template-areas:
         "title title title title"
@@ -51,7 +51,7 @@
     width: 180px;
     aspect-ratio: inherit;
     border-radius: inherit;
-    background: conic-gradient(green var(--closedCases), #dbdb12 var(--activeCases), #dbdb12 calc(var(--activeCases) + var(--closedCases)), red calc(var(--activeCases) + var(--closedCases)), red calc(100% - (var(--activeCases) + var(--closedCases))));
+    background: conic-gradient(green var(--closedCases), #dbdb12 var(--closedCases), #dbdb12 calc(var(--activeCases) + var(--closedCases)), red calc(var(--activeCases) + var(--closedCases)), red calc(100% - (var(--activeCases) + var(--closedCases))));
 }
 
 .closed_case, .open_case, .active_case {
@@ -126,7 +126,7 @@ tr:nth-child(even) {
 @media only screen and (max-width: 640px)  {
     .cases_page {
         grid-template-columns: 1fr;
-        grid-template-rows: 0.2fr 0.7fr 0.7fr 2fr;
+        grid-template-rows: 0.1fr 0.3fr 0.3fr 2fr;
         grid-template-areas:
             "title"
             "content1"
@@ -138,11 +138,11 @@ tr:nth-child(even) {
 
 @media only screen and (min-width: 1024px) {
     .cases_analysis .pie_chart {
-        width: 110px;
+        width: 100px;
     }
 
     .cases_analysis::after {
-        width: 220px;
+        width: 200px;
     }
 
     .closed_case::before,

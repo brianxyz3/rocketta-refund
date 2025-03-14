@@ -5,6 +5,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { useAuth } from "../authContext";
 import { toast } from "react-toastify";
 import CommentForm from "../components/CommentForm";
+import Loader from "../components/Loader";
 
 
 const CaseDetailsPage = () => {
@@ -13,6 +14,7 @@ const CaseDetailsPage = () => {
     const {currentUser} = useAuth();
     const [fileData, setFileData] = useState([]);
     const [comments, setComments] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const headerObj = {
         authorization: currentUser?.token,
@@ -24,9 +26,15 @@ const CaseDetailsPage = () => {
     useEffect(() => {        
         if(!currentUser?.isAdmin) navigate("/");
         const getFile = async () => {
+            try{
             const res = await getFileData(id, headerObj);
             setComments([...res.adminComment]);            
             return setFileData({...res});
+            } catch(err){
+                return console.log(err);
+            } finally {
+                setIsLoading(false);
+            }
         }
         getFile();
     }, []);
@@ -80,6 +88,7 @@ const CaseDetailsPage = () => {
                 </Link>
             </div>
         </section>
+        {isLoading ? (<Loader loading={isLoading} />) :                
             <section className="bg-indigo-50">
                 <div className="container m-auto py-7 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
@@ -138,6 +147,7 @@ const CaseDetailsPage = () => {
                     </div>
                 </div>
             </section>
+        }
           </>
         }
       </main>

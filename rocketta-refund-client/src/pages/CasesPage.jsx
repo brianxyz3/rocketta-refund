@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router";
 import { AccountCircle, Search } from "@mui/icons-material";
 import { CircleNotificationsOutlined } from "@mui/icons-material";
 import StatsAnalysisCard from "../components/StatsAnalysisCard";
+import Loader from "../components/Loader";
 import { filesImg } from "../assets/images";
 
 
@@ -18,6 +19,7 @@ const CasesPage = () => {
     const [showActiveCases, setShowActiveCases] = useState(false);
     const [showClosedCases, setShowClosedCases] = useState(false);
     const [showOpenCases, setShowOpenCases] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
@@ -30,10 +32,15 @@ const CasesPage = () => {
 
     useEffect(() => {
         if (!currentUser?.isAdmin) navigate("/");
-        console.log("Ran useEffect");   
         const onLoad = async () => {
-            const files = await getCaseFiles(headerObj);
-            return setCases(files);
+            try{
+                const files = await getCaseFiles(headerObj);
+                return setCases(files);
+            } catch (err) {
+                return console.log(err);
+            } finally {
+                setIsLoading(false);
+            }
         }
         onLoad();
     }, []);
@@ -71,7 +78,6 @@ const CasesPage = () => {
 
   return (
       <main className="overflow-hidden">
-        {currentUser.isAdmin &&
           <div className="cases_page">
               <div className="flex flex-wrap pt-5 m-1 sm:mx-3 table_title gap-y-4 items-start justify-evenly md:justify-between">
                   <div className="order-1">
@@ -95,37 +101,40 @@ const CasesPage = () => {
                       </div>
                   </div>
               </div>
-              
-              <StatsAnalysisCard style="content1 bg-gradient-to-bl to-blue-500 from-[#112152]">
-                <div className="w-1/2">
-                    <img src={filesImg} alt="a vector image of a hand holding a briefcase" />
-                </div>
-                <div className="w-1/2 flex justify-center items-center">
-                      <div className="flex flex-col gap-y-2 text-2xl lg:text-3xl">
-                        <h4>Total Users</h4>
-                        <h4>2,000+</h4>
-                        <p className="text-base md:text-lg"><span className="text-green-500">+2.4%</span> vs last month</p>
-                    </div>
-                </div>
-              </StatsAnalysisCard>
+                {isLoading ? (<Loader loading={isLoading} />) :
+                    <StatsAnalysisCard style="content1 bg-gradient-to-bl to-blue-500 from-[#112152]">
+                        <div className="w-1/2">
+                            <img src={filesImg} alt="a vector image of a hand holding a briefcase" />
+                        </div>
+                        <div className="w-1/2 flex justify-center items-center">
+                            <div className="flex flex-col gap-y-2 text-2xl lg:text-3xl">
+                                <h4>Total Users</h4>
+                                <h4>2,000+</h4>
+                                <p className="text-base md:text-lg"><span className="text-green-500">+2.4%</span> vs last month</p>
+                            </div>
+                        </div>
+                    </StatsAnalysisCard>
+                }
 
-              <StatsAnalysisCard style="content2 bg-gradient-to-br to-blue-500 from-[#112152]">
-                  <div className="cases_analysis w-3/5 lg:w-1/2" style={percentages}>
-                      <div className="pie_chart text-black flex items-center text-sm lg:text-base justify-center p-2 text-center">
-                          <p>Closed <span className={`${parseInt(percentClosedCases) >= 50 ? "text-green-600" : "text-red-600"}`}>{percentClosedCases}</span> of Cases</p>
-                      </div>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                      <h4 className="text-lg md:text-xl lg:text-3xl">Submitted Cases</h4>
-                      <h4 className="text-xl ps-2 lg:text-3xl">{cases.length}</h4>
-                      <div className="text-xs sm:text-sm lg:text-lg">
-                        <p className="ps-2">Keys</p>
-                        <p className="ps-4 closed_case">{closedCases.length} Closed Cases</p>
-                        <p className="ps-4 active_case">{activeCases.length} Active Cases</p>
-                        <p className="ps-4 open_case">{cases.length - closedCases.length} Open Cases</p>
-                      </div>
-                  </div>
-              </StatsAnalysisCard>
+                {isLoading ? (<Loader loading={isLoading} />) :
+                <StatsAnalysisCard style="content2 bg-gradient-to-br to-blue-500 from-[#112152]">
+                    <div className="cases_analysis w-3/5 lg:w-1/2" style={percentages}>
+                        <div className="pie_chart text-black flex items-center text-sm lg:text-base justify-center p-2 text-center">
+                            <p>Closed <span className={`${parseInt(percentClosedCases) >= 50 ? "text-green-600" : "text-red-600"}`}>{percentClosedCases}</span> of Cases</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <h4 className="text-lg md:text-xl lg:text-3xl">Submitted Cases</h4>
+                        <h4 className="text-xl ps-2 lg:text-3xl">{cases.length}</h4>
+                        <div className="text-xs sm:text-sm lg:text-lg">
+                            <p className="ps-2">Keys</p>
+                            <p className="ps-4 closed_case">{closedCases.length} Closed Cases</p>
+                            <p className="ps-4 active_case">{activeCases.length} Active Cases</p>
+                            <p className="ps-4 open_case">{cases.length - closedCases.length} Open Cases</p>
+                        </div>
+                    </div>
+                </StatsAnalysisCard>
+                }
             <section className="table overflow-scroll">
                 <div className="ms-auto w-full sm:w-fit me-4 flex flex-wrap justify-evenly items-center gap-3">
                     <div className="w-2/5 sm:w-auto flex gap-1">
@@ -158,6 +167,7 @@ const CasesPage = () => {
                     </div>
                 </div>
                 <div className="w-screen overflow-scroll">
+                      {isLoading ? (<Loader loading={isLoading} />) :                
                     <Table>
                         <thead>
                             <TableHeader/>
@@ -167,10 +177,10 @@ const CasesPage = () => {
                             {showClosedCases && files(closedCases) || showOpenCases && files(openCases) || showActiveCases && files(activeCases) || true && files(cases)}
                         </tbody>
                     </Table>
+                    }
                 </div>
             </section>
         </div>
-        }
     </main>
   )
 }
