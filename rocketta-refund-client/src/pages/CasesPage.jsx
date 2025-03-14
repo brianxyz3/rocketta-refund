@@ -85,7 +85,7 @@ const CasesPage = () => {
                   </div>
 
                   <div className="hidden sm:flex order-2 md:order-3 items-center gap-x-1 sm:gap-x-3">
-                      <CircleNotificationsOutlined sx={{ fontSize: 18 }} />
+                      <CircleNotificationsOutlined sx={{ fontSize: 20 }} className="hover:text-white hover:bg-black rounded-full"/>
                       <div className="flex items-center gap-x-0 sm:gap-x-1">
                           <AccountCircle sx={{ fontSize: 35 }} />
                           <div className="text-xs">
