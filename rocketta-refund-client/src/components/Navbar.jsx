@@ -36,7 +36,7 @@ const Navbar = () => {
             <nav className="w-dvw overflow-hidden md:overflow-visible fixed top-0 z-50 bg-[#112152] px-3 text-blue-600 md:text-[#f4f4f4] py-4">
                 <div className="flex justify-between md:items-end">
                     <Link to="/"><div className="text-xl font-bold font-sans text-blue-800 md:text-2xl"><span className="text-blue-300">r</span>ockettarefund.org</div></Link>
-                    <div className={`${isOpen ? isAdmin ? "h-72" : "h-64" : "h-0"} md:opacity-100 md:scale-100 md:h-fit md:flex md:justify-evenly md:w-11/12 duration-300`}>
+                    <div className={`${isOpen ? isAdmin ? "h-[19rem]" : "h-64" : "h-0"} md:opacity-100 md:scale-100 md:h-fit md:flex md:justify-evenly md:w-11/12 duration-300`}>
                         <div className={"w-full flex"}>
                             <div className="w-7/12 flex justify-center border-1 md:border-none pt-0 text-center gap-y-4 absolute md:static top-20 left-0 right-0 mx-auto flex-col md:flex-row md:w-full md:gap-x-6 lg:gap-x-8 xl:gap-x-10">
                                 {navItems.map((item, idx) => (
