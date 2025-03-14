@@ -39,7 +39,7 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
                   />
                   <button
                       disabled={!isActiveInvestigation}
-                      className={`${isActiveInvestigation ? "bg-blue-700 hover:bg-white hover:text-blue-700" : "bg-gray-700"} font-bold border border-blue-700 text-white w-full lg:w-auto py-0.5 px-1.5 rounded-lg duration-200`}>
+                      className={`${isActiveInvestigation ? "bg-blue-700 hover:bg-white hover:text-blue-700" : "bg-gray-700 cursor-not-allowed"} font-bold border border-blue-700 text-white w-full lg:w-auto py-0.5 px-1.5 rounded-lg duration-200`}>
                       Add Comment
                   </button>
               </div>
