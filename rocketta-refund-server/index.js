@@ -8,7 +8,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserCaseFile = require("./models/userCaseFile.js");
 const {
-  checkUserAuthentication,
   checkUserAuthorization,
   sanitizeCaseFile,
   sanitizeUser,
@@ -38,6 +37,21 @@ const generateToken = (user) => {
   return jwt.sign({ id: user._id, email: user.email }, jwtSecret, {
     expiresIn: "24h",
   });
+};
+
+const checkUserAuthentication = (req, res, next) => {
+  const token = req.headers?.authorization;
+  try {
+    if (req.headers?.cookie.includes(token)) {
+      jwt.verify(token, jwtSecret);
+      next();
+    } else {
+      throw new ExpressError(401, "Invalid user token");
+    }
+  } catch (err) {
+    console.log("error from authentication check middleware: " + err);
+    throw new ExpressError(401, "Invalid user token"); 
+  }
 };
 
 app.post(

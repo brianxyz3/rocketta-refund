@@ -1,9 +1,7 @@
 const validator = require("validator");
 const ExpressError = require("./utilities/ExpressError.js");
-const jwt = require("jsonwebtoken");
 const User = require("./models/user.js");
 
-const jwtSecret = process.env.JWT_SECRET || "notagoodsecret1";
 
 const sanitizeCaseFile = (req, res, next) => {
   try {
@@ -54,19 +52,7 @@ const sanitizeComment = (req, res, next) => {
   }
 }
 
-const checkUserAuthentication = (req, res, next) => {
-  const token = req.headers?.authorization;
-  try {
-    if (req.headers?.cookie.includes(token)) {
-      jwt.verify(token, jwtSecret);
-      next();
-    } else {
-      throw new ExpressError(401, "Invalid user token");
-    }
-  } catch (err) {
-    console.log("error from authentication check middleware: " + err);
-  }
-};
+
 
 const checkUserAuthorization = async (req, res, next) => {
   try {   
@@ -91,6 +77,5 @@ module.exports = {
   sanitizeUser,
   sanitizeUserLogin,
   sanitizeComment,
-  checkUserAuthentication,
   checkUserAuthorization,
 };
