@@ -55,7 +55,7 @@ const SignUpPage = () => {
     const handleRegister = async (data) => {
         try {
             if (data.password === data.confirmPassword) {
-                const user = { ...data, isAdmin: true };
+                const user = { ...data };
                 const newUser = await signUpWithEmailAndPassword(user);
 
                 if (newUser.token) {
@@ -132,7 +132,8 @@ const SignUpPage = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     {...register("confirmPassword", validateForm.confirmPassword)}
                                 />
-                                <div className="mb-5">
+                                <div className="flex flex-col mb-5">
+                                    <FormControlLabel control={<Checkbox />} label="Use Admin Mode" {...register("isAdmin")} />
                                     <FormControlLabel required control={<Checkbox />} label="Terms and Conditions" />
                                 </div>
                             </div>
