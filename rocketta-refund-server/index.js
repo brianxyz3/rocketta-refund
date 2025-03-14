@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+};
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -15,9 +18,9 @@ const catchAsync = require("./utilities/catchAsync.js");
 const User = require("./models/user.js");
 const ExpressError = require("./utilities/ExpressError.js");
 const AdminComment = require("./models/adminComment.js");
-const dbUrl = "mongodb://localhost:27017/payback";
-const PORT = process.env.REACT_APP_PORT || 8000;
-const jwtSecret = process.env.REACT_APP_JWT_SECRET || "notagoodsecret1";
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/payback";
+const PORT = process.env.PORT || 5000;
+const jwtSecret = process.env.JWT_SECRET || "notagoodsecret1";
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
@@ -72,8 +75,8 @@ app.post(
   "/register",
   sanitizeUser,
   catchAsync(async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
-    const userArr = User.find({ email });
+    const { firstName, lastName, email, password, isAdmin } = req.body;
+    const userArr = await User.find({ email });
     const user = userArr[0];
 
     try {
@@ -86,6 +89,7 @@ app.post(
           lastName,
           email,
           password: hashedPassword,
+          isAdmin,
         });
         console.log(newUser);
         const registeredUser = await newUser.save();
@@ -186,14 +190,14 @@ app.put(
   checkUserAuthentication,
   checkUserAuthorization,
   catchAsync(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
       const caseFile = await UserCaseFile.findByIdAndUpdate(id, req.body);
       if (!caseFile) throw new ExpressError(404, "User profile not found");
       res.status(200).json({
         status: 200,
-        message: "Operation succesful"
+        message: "Operation succesful",
       });
     } catch (err) {
       console.log("An error occurred, " + err);
@@ -207,7 +211,7 @@ app.post(
   checkUserAuthentication,
   checkUserAuthorization,
   catchAsync(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
       const comment = new AdminComment(req.body);
@@ -218,7 +222,7 @@ app.post(
       if (!caseFile) throw new ExpressError(404, "User profile not found");
       res.status(200).json({
         status: 200,
-        message: "Operation succesful"
+        message: "Operation succesful",
       });
     } catch (err) {
       console.log("An error occurred, " + err);
@@ -262,7 +266,6 @@ app.post(
   })
 );
 
-
 app.get(
   "/cases",
   checkUserAuthentication,
@@ -283,8 +286,8 @@ app.get(
   checkUserAuthorization,
   catchAsync(async (req, res) => {
     try {
-      const {id} = req.params;
-      const caseFile = await UserCaseFile.findById(id);      
+      const { id } = req.params;
+      const caseFile = await UserCaseFile.findById(id);
       await caseFile.populate("adminComment");
       res.status(200).json(caseFile);
     } catch (err) {
