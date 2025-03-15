@@ -11,7 +11,7 @@ const sanitizeCaseFile = (req, res, next) => {
     caseFile.contactPhone = validator.escape(req.body.contactPhone);
     caseFile.contactEmail = validator.normalizeEmail(req.body.contactEmail);
     caseFile.description = validator.escape(req.body.description);
-    next();
+    return next();
   } catch (err) {
     console.log("error from sanitizeCaseFile middleware: " + err);
   }
@@ -24,7 +24,7 @@ const sanitizeUser = (req, res, next) => {
     user.lastName = validator.escape(req.body.lastName);
     user.email = validator.normalizeEmail(req.body.email);
     user.password = validator.escape(req.body.password);
-    next();
+    return next();
   } catch (err) {
     console.log("error from sanitizeUser middleware: " + err);
   }
@@ -35,7 +35,7 @@ const sanitizeUserLogin = (req, res, next) => {
     const user = req.body;
     user.email = validator.normalizeEmail(req.body.email);
     user.password = validator.escape(req.body.password);
-    next();
+    return next();
   } catch (err) {
     console.log("error from sanitizeUserLogin middleware: " + err);
   }
@@ -45,7 +45,7 @@ const sanitizeComment = (req, res, next) => {
   try {
     const data = req.body;
     data.comment = validator.escape(req.body.comment);
-    next();
+    return next();
   } catch (err) {
     console.log("error from sanitizeComment middleware: " + err);
     
