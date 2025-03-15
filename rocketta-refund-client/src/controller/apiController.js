@@ -1,6 +1,8 @@
+const apiUrl = "https://rocketta-refund.onrender.com";
+
 const submitCaseFile = async (newCase) => {
   try {
-    const res = await fetch("/api/newCase", {
+    const res = await fetch(`${apiUrl}/newCase`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,7 +18,7 @@ const submitCaseFile = async (newCase) => {
 
 const getCaseFiles = async (headerObj) => {
   try {
-    const res = await fetch("/api/cases", {
+    const res = await fetch(`${apiUrl}/cases`, {
       method: "GET",
       headers: headerObj,
     });
@@ -29,7 +31,7 @@ const getCaseFiles = async (headerObj) => {
 
 const getFileData = async (id, headerObj) => {
   try {
-    const res = await fetch(`/api/cases/${id}`, {
+    const res = await fetch(`${apiUrl}/cases/${id}`, {
       method: "GET",
       headers: headerObj,
     });
@@ -42,7 +44,7 @@ const getFileData = async (id, headerObj) => {
 
 const registerUser = async (newUser) => {
   try {
-    const res = await fetch("/api/register", {
+    const res = await fetch(`${apiUrl}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +60,7 @@ const registerUser = async (newUser) => {
 
 const registerAdmin = async (newUser, headerObj) => {
   try {
-    const res = await fetch("/api/registerAdmin", {
+    const res = await fetch(`${apiUrl}/registerAdmin`, {
       method: "POST",
       headers: headerObj,
       body: JSON.stringify(newUser),
@@ -72,7 +74,7 @@ const registerAdmin = async (newUser, headerObj) => {
 
 const updateUserPermission = async (user, headerObj) => {
   try {
-    const res = await fetch("/api/updateUserPermission", {
+    const res = await fetch(`${apiUrl}/updateUserPermission`, {
       method: "PUT",
       headers: headerObj,
       body: JSON.stringify(user),
@@ -86,7 +88,7 @@ const updateUserPermission = async (user, headerObj) => {
 
 const updateCaseFile = async (id, newInfo, headerObj) => {
   try {
-    const res = await fetch(`/api/cases/${id}`, {
+    const res = await fetch(`${apiUrl}/cases/${id}`, {
       method: "PUT",
       headers: headerObj,
       body: JSON.stringify(newInfo),
@@ -100,7 +102,7 @@ const updateCaseFile = async (id, newInfo, headerObj) => {
 
 const addAdminComment = async (id, newComment, headerObj) => {
   try {
-    const res = await fetch(`/api/comments/${id}`, {
+    const res = await fetch(`${apiUrl}/comments/${id}`, {
       method: "POST",
       headers: headerObj,
       body: JSON.stringify(newComment),
@@ -114,7 +116,7 @@ const addAdminComment = async (id, newComment, headerObj) => {
 
 const loginUser = async (user) => {
   try {
-    const res = await fetch("/api/login", {
+    const res = await fetch(`${apiUrl}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
