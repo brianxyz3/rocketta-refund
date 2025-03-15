@@ -4,7 +4,8 @@
         { "src": "*.js", "use": "@vercel/node" }
     ],
     "routes": [
-    { "src": "/(.*)", "dest": "/" }
-  ]
+        { "src": "/(.*)", "dest": "index.js" }
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
 }
-
