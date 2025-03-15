@@ -15,6 +15,7 @@ const CaseDetailsPage = () => {
     const [fileData, setFileData] = useState([]);
     const [comments, setComments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isUpdatingApi, setIsUpdatingApi] = useState(false);
 
     const headerObj = {
         authorization: currentUser?.token,
@@ -48,30 +49,52 @@ const CaseDetailsPage = () => {
     }
     
     const openInvestigation = async () => {
+        setIsUpdatingApi(true);
+        try{
         const res = await updateCaseFile(id, {isActiveInvestigation: true}, headerObj).catch((err) => console.log(err));
         if(!res.status == 200) toast.error("Something went wrong. Try again.");
         setFileData((currData) => (
             {...currData, isActiveInvestigation: true}
         ));
         toast.success("Case is now an active investigation");
+        } catch (err) {
+            return console.log(err);
+        } finally {
+            setIsUpdatingApi(false);
+        }
     }
     
     const closeCase = async () => {
-        const res = await updateCaseFile(id, {isActiveInvestigation: false, isClosed: true}, headerObj).catch((err) => console.log(err));
-        if(!res.status == 200) toast.error("Something went wrong. Try again.");
-        setFileData((currData) => (
-            { ...currData, isActiveInvestigation: false, isClosed: true }
-        ));
-        toast.success("Another Case Closed, Great Work");
+        setIsUpdatingApi(true);
+        try{
+            const res = await updateCaseFile(id, { isActiveInvestigation: false, isClosed: true }, headerObj).catch((err) => console.log(err));
+            if (!res.status == 200) toast.error("Something went wrong. Try again.");
+            setFileData((currData) => (
+                { ...currData, isActiveInvestigation: false, isClosed: true }
+            ));
+            toast.success("Another Case Closed, Great Work");
+        } catch(err) {
+            return console.log(err);
+        } finally {
+            setIsUpdatingApi(false);
+        }
+        
     }
     
     const reOpenCase = async () => {
-        const res = await updateCaseFile(id, {isActiveInvestigation: true, isClosed: false}, headerObj).catch((err) => console.log(err));
-        if(!res.status == 200) toast.error("Something went wrong. Try again.");
-        setFileData((currData) => (
-            { ...currData, isActiveInvestigation: true, isClosed: false }
-        ));
-        toast.success("Case ReOpened, Getting it right is what matters most");
+        setIsUpdatingApi(true);
+        try{
+            const res = await updateCaseFile(id, { isActiveInvestigation: true, isClosed: false }, headerObj).catch((err) => console.log(err));
+            if (!res.status == 200) toast.error("Something went wrong. Try again.");
+            setFileData((currData) => (
+                { ...currData, isActiveInvestigation: true, isClosed: false }
+            ));
+            toast.success("Case ReOpened, Getting it right is what matters most");
+        } catch(err) {
+            return console.log(err);
+        } finally {
+            setIsUpdatingApi(false);
+        }
     }
     
   return (
@@ -88,7 +111,7 @@ const CaseDetailsPage = () => {
                 </Link>
             </div>
         </section>
-        {isLoading ? (<Loader loading={isLoading} />) :                
+        {isLoading ? (<Loader loading={isLoading} size={40} />) :                
             <section className="bg-indigo-50">
                 <div className="container m-auto py-7 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
@@ -121,6 +144,7 @@ const CaseDetailsPage = () => {
                       </div>
                         {/* Sidebar */}
                       <aside className="bg-gray-200 rounded-lg">
+                        {isUpdatingApi ? (<Loader loading={isUpdatingApi} size={10} />) :
                           <div className="flex m-6 text-white font-bold gap-1 xl:gap-2 md:flex-wrap lg:flex-nowrap">
                               {!fileData.isActiveInvestigation && !fileData.isClosed && <button className="bg-green-500 w-1/2 md:w-full py-1 px-2 rounded-lg" onClick={openInvestigation}>Activate Case</button>}
                               {fileData.isActiveInvestigation && !fileData.isClosed &&  <p className="text-black text-sm bg-yellow-400 rounded-sm flex items-center justify-center p-0.5 w-full">Ongoing Investigation</p>}
@@ -129,6 +153,7 @@ const CaseDetailsPage = () => {
                                 : <button className="bg-red-600 w-1/2 md:w-full py-0.5 px-1.5 rounded-lg" onClick={closeCase}>Close Case</button>
                             }
                         </div>
+                        }
                             {/*Add Agent's Comment  */}
                             <div className="bg-gray-300 p-3 rounded-lg shadow-md mx-3 mt-6">
                               <CommentForm id={id} updateComments={updateComments} isActiveInvestigation={fileData.isActiveInvestigation} user={currentUser}/>

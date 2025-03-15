@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { addAdminComment } from "../controller/apiController";
+import Loader from "./Loader";
 
 
 const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
     const [formData, setFormData] = useState({comment: ""});
+    const [isUpdatingApi, setIsUpdatingApi] = useState(false);
+
     const headerObj = {
         authorization: user?.token,
         id: user?.id,
@@ -14,11 +17,18 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
-        const res = await addAdminComment(id, formData, headerObj).catch((err) => console.log(err));
-        if (!res.status == 200) toast.error("Something went wrong. Try again.");
-        updateComments(formData);
-        setFormData({ comment: "" });
-        toast.success("New Case Update Added");
+        setIsUpdatingApi(true);
+        try {
+            const res = await addAdminComment(id, formData, headerObj).catch((err) => console.log(err));
+            if (!res.status == 200) toast.error("Something went wrong. Try again.");
+            updateComments(formData);
+            setFormData({ comment: "" });
+            toast.success("New Case Update Added");
+        } catch(err) {
+            return console.log(err);
+        } finally {
+            setIsUpdatingApi(false)
+        }
     }
     
   return (
@@ -38,9 +48,11 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
                       ))}
                   />
                   <button
-                      disabled={!isActiveInvestigation}
-                      className={`${isActiveInvestigation ? "bg-blue-700 hover:bg-white hover:text-blue-700" : "bg-gray-700 cursor-not-allowed"} font-bold border border-blue-700 text-white w-full lg:w-auto py-0.5 px-1.5 rounded-lg duration-200`}>
-                      Add Comment
+                      disabled={!isActiveInvestigation || isUpdatingApi}
+                      className={`${isActiveInvestigation ? "bg-blue-400 hover:bg-white hover:text-blue-700" : "bg-gray-700 cursor-not-allowed"} font-bold border border-blue-700 text-white w-full lg:w-auto py-0.5 px-1.5 rounded-lg duration-200`}>
+                      {isUpdatingApi ? (<Loader loading={isUpdatingApi} size={15} />) :
+                      "Add Comment"
+                    }
                   </button>
               </div>
           </form>

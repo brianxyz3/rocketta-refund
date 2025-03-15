@@ -45,15 +45,15 @@ const CasesPage = () => {
         onLoad();
     }, []);
 
-    const closedCases = cases.filter((file) => {
+    const closedCases = cases?.filter((file) => {
         return file.isClosed === true;
     })
 
-    const openCases = cases.filter((file) => {
+    const openCases = cases?.filter((file) => {
         return file.isClosed === false;
     })
 
-    const activeCases = cases.filter((file) => {
+    const activeCases = cases?.filter((file) => {
         return file.isActiveInvestigation === true;
     })
 
@@ -101,10 +101,11 @@ const CasesPage = () => {
                       </div>
                   </div>
               </div>
-                {isLoading ? (<Loader loading={isLoading} />) :
                     <StatsAnalysisCard style="content1 bg-gradient-to-bl to-blue-500 from-[#112152]">
+                  {isLoading ? (<Loader loading={isLoading} size={20} />) :
+                        <>
                         <div className="w-1/2">
-                            <img src={filesImg} alt="a vector image of a hand holding a briefcase" />
+                            <img src={filesImg} alt="a vector image of a hand holding a briefcase" className="max-h-72" />
                         </div>
                         <div className="w-1/2 flex justify-center items-center">
                             <div className="flex flex-col gap-y-2 text-2xl lg:text-3xl">
@@ -113,12 +114,13 @@ const CasesPage = () => {
                                 <p className="text-base md:text-lg"><span className="text-green-500">+2.4%</span> vs last month</p>
                             </div>
                         </div>
+                      </>
+                    }
                     </StatsAnalysisCard>
-                }
 
-                {isLoading ? (<Loader loading={isLoading} />) :
                 <StatsAnalysisCard style="content2 bg-gradient-to-br to-blue-500 from-[#112152]">
-                    <div className="cases_analysis w-3/5 lg:w-1/2" style={percentages}>
+                  {isLoading ? (<Loader loading={isLoading} size={20} />) :
+                    <><div className="cases_analysis w-3/5 lg:w-1/2" style={percentages}>
                         <div className="pie_chart text-black flex items-center text-sm lg:text-base justify-center p-2 text-center">
                             <p>Closed <span className={`${parseInt(percentClosedCases) >= 50 ? "text-green-600" : "text-red-600"}`}>{percentClosedCases}</span> of Cases</p>
                         </div>
@@ -132,9 +134,10 @@ const CasesPage = () => {
                             <p className="ps-4 active_case">{activeCases.length} Active Cases</p>
                             <p className="ps-4 open_case">{cases.length - closedCases.length} Open Cases</p>
                         </div>
-                    </div>
+                          </div>
+                        </>
+                    }
                 </StatsAnalysisCard>
-                }
             <section className="table overflow-scroll">
                 <div className="ms-auto w-full sm:w-fit me-4 flex flex-wrap justify-evenly items-center gap-3">
                     <div className="w-2/5 sm:w-auto flex gap-1">
@@ -167,7 +170,7 @@ const CasesPage = () => {
                     </div>
                 </div>
                 <div className="w-screen overflow-scroll">
-                      {isLoading ? (<Loader loading={isLoading} />) :                
+                      {isLoading ? (<Loader loading={isLoading} size={30} />) :                
                     <Table>
                         <thead>
                             <TableHeader/>
