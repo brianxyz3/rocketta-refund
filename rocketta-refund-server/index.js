@@ -40,8 +40,10 @@ const generateToken = (user) => {
 const checkUserAuthentication = (req, res, next) => {
   const token = req.headers?.authorization;
   try {
-    if (req.headers?.cookie.includes(token)) {
+    if (token) {
       jwt.verify(token, jwtSecret);
+      console.log("ran authentication middleware");
+      
       next();
     } else {
       throw new ExpressError(401, "Invalid user token");
