@@ -1,5 +1,5 @@
 {
-  "name": "payback-clone-server",
+  "name": "rocketta-refund-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
