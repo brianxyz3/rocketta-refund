@@ -11,6 +11,8 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { signUpWithEmailAndPassword } from "../controller/authController";
+import Spinner from "../components/Spinner";
+
 
 const SignUpPage = () => {
     const originLocation = location.origin;
@@ -22,6 +24,8 @@ const SignUpPage = () => {
     } = useForm();
 
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    
 
     const errorStyle = { color: "red" }
 
@@ -53,12 +57,13 @@ const SignUpPage = () => {
     };
 
     const handleRegister = async (data) => {
+        setIsLoading(true);
         try {
             if (data.password === data.confirmPassword) {
                 const user = { ...data };
                 const newUser = await signUpWithEmailAndPassword(user);
 
-                if (newUser.token) {
+                if (newUser?.token) {
                     toast.success("User Successfully Registered");
                     setTimeout(() => (location.assign(originLocation + "/")), 1500)
                 }
@@ -67,6 +72,8 @@ const SignUpPage = () => {
             }
         } catch (err) {
             toast.error("Something Went Wrong. Try Again");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -137,12 +144,16 @@ const SignUpPage = () => {
                                     <FormControlLabel required control={<Checkbox />} label="Terms and Conditions" />
                                 </div>
                             </div>
+                            <div className="flex">
                             <button
-                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:shadow-outline hover:scale-105 duration-100"
+                            disabled={isLoading}
+                                className="bg-blue-500 disabled:cursor-not-allowed disabled:hover:scale-100 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:shadow-outline hover:scale-105 duration-100"
                                 type="submit"
                             >
                                 Sign Up
                             </button>
+                            {isLoading && <div className="w-fit ms-3"><Spinner loading={isLoading} /></div>}
+                            </div>
                         </form>
                     </div>
                     <div className="bgLoginImg bg-cover bg-center hidden md:flex rounded-r-lg md:w-1/2 min-h-full"></div>

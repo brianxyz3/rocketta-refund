@@ -5,9 +5,10 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { submitCaseFile } from "../controller/apiController"
+import { useState } from "react";
+import Loader from "./Loader";
 
 
 
@@ -44,7 +45,8 @@ const ConsultationForm = () => {
 
     const errorStyle = { color: "red" };
 
-    const navigate = useNavigate();
+    const [isUpdatingApi, setIsUpdatingApi] = useState(false);
+    
 
     const validateForm = {
         firstName: {
@@ -62,6 +64,7 @@ const ConsultationForm = () => {
     };
 
     const onSubmit = async (data) => {
+        setIsUpdatingApi(true);
         try {
             const res = await submitCaseFile(data);
             res?._id ?
@@ -70,8 +73,9 @@ const ConsultationForm = () => {
             reset();
         } catch (err) {
             toast.error("Case File Submit Unsuccessful, Try Again");
+        } finally {
+            setIsUpdatingApi(false);
         }
-
     }
 
     return (
@@ -131,7 +135,9 @@ const ConsultationForm = () => {
                     defaultValue=""
                 />
             </div>
-            <button className="bg-yellow-400 text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200">Get a free consultation</button>
+            <button disabled={isUpdatingApi} className="bg-yellow-400 disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:cursor-not-allowed text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200">
+                {isUpdatingApi ? (<Loader loading={isUpdatingApi} size={15} />) : "Get a free consultation"}
+            </button>
         </form>
 
     )

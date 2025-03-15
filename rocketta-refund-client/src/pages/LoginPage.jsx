@@ -6,6 +6,7 @@ import { IconButton, OutlinedInput, InputLabel, InputAdornment, FormControl } fr
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { logInWithEmailAndPassword } from "../controller/authController";
+import Spinner from "../components/Spinner";
 
 const LoginPage = () => {
     const originLocation = location.origin;
@@ -16,6 +17,7 @@ const LoginPage = () => {
     } = useForm({ mode: "onChange" });
 
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -24,9 +26,10 @@ const LoginPage = () => {
     };
 
     const handleLogin = async (data) => {
+        setIsLoading(true);
         try {
             const user = await logInWithEmailAndPassword(data);
-            if (user.token) {
+            if (user?.token) {
                 toast.success("Welcome Back");
                 setTimeout(() => (location.assign(originLocation + "/")), 1000)
             } else {
@@ -34,6 +37,8 @@ const LoginPage = () => {
             }
         } catch (err) {
             return toast.error("Something went wrong. Try again");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -86,12 +91,17 @@ const LoginPage = () => {
                                 <a className="md:mt-2 text-blue-400 hover:text-blue-500 text-right" href="">Forgot Password?</a>
                             </div>
                         </div>
+                        <div className="flex">
                         <button
-                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:shadow-outline hover:scale-105 duration-100"
+                            disabled={isLoading}
+                            className="bg-blue-500 disabled:cursor-not-allowed disabled:hover:scale-100 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:shadow-outline hover:scale-105 duration-100"
                             type="submit"
                         >
-                            Sign Up
+                            Login
                         </button>
+                        
+                            {isLoading && <div className="w-fit ms-3"><Spinner loading={isLoading} /></div>}
+                        </div>
                     </form>
                 </div>
                 <div className="bgLoginImg bg-cover bg-bottom h-full hidden md:flex rounded-r-lg md:w-6/12 lg:bg-center"></div>
