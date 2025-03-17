@@ -33,7 +33,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="w-dvw overflow-hidden md:overflow-visible fixed top-0 z-50 bg-[#112152] px-3 text-blue-600 md:text-[#f4f4f4] py-4">
+            <nav className="w-full overflow-y-hidden md:overflow-visible fixed top-0 z-50 bg-[#112152] px-3 text-blue-600 md:text-[#f4f4f4] py-4">
                 <div className="flex justify-between md:items-end">
                     <Link to="/"><div className="text-xl font-bold font-sans text-blue-800 md:text-2xl"><span className="text-blue-300">r</span>ockettarefund.org</div></Link>
                     <div className={`${isOpen ? isAdmin ? "h-[19rem]" : "h-64" : "h-0"} md:opacity-100 md:scale-100 md:h-fit md:flex md:justify-evenly md:w-11/12 duration-300`}>
