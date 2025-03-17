@@ -19,10 +19,14 @@ body {
     overflow-x: hidden;
 }
 .text_shadow {
-    text-shadow: 1px 0, 0 0 1px #fff;
+    text-shadow: 0 0, 0 0 1px  #000;
 }
 .bgAboutImg {
     background-image: url("./assets/images/about-img.jpg");
+}
+
+.bgAboutImg p {
+    line-height: 1.8rem;
 }
 
 .bgFaqImg {
