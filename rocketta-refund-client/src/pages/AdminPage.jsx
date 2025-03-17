@@ -23,9 +23,9 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   const headerObj = {
-    authorization: currentUser?.token,
-    id: currentUser?.id,
-    admin: currentUser?.isAdmin,
+    authorization: currentUser.token,
+    id: currentUser.id,
+    admin: currentUser.isAdmin,
     "Content-Type": "application/json",
   }
 

@@ -63,7 +63,7 @@ const SignUpPage = () => {
                 const user = { ...data };
                 const newUser = await signUpWithEmailAndPassword(user);
 
-                if (newUser?.token) {
+                if (newUser && newUser.token) {
                     toast.success("User Successfully Registered");
                     setTimeout(() => (location.assign(originLocation + "/")), 1500)
                 }

@@ -18,14 +18,14 @@ const CaseDetailsPage = () => {
     const [isUpdatingApi, setIsUpdatingApi] = useState(false);
 
     const headerObj = {
-        authorization: currentUser?.token,
-        id: currentUser?.id,
-        admin: currentUser?.isAdmin,
+        authorization: currentUser.token,
+        id: currentUser.id,
+        admin: currentUser.isAdmin,
         "Content-Type": "application/json",
     }
 
     useEffect(() => {        
-        if(!currentUser?.isAdmin) navigate("/");
+        if(!currentUser.isAdmin) navigate("/");
         const getFile = async () => {
             try{
             const res = await getFileData(id, headerObj);
@@ -63,7 +63,7 @@ const CaseDetailsPage = () => {
             setIsUpdatingApi(false);
         }
     }
-    
+   
     const closeCase = async () => {
         setIsUpdatingApi(true);
         try{
@@ -162,7 +162,7 @@ const CaseDetailsPage = () => {
                             <div className="bg-white max-h-64 overflow-auto p-2 mx-1 rounded-lg shadow-md mt-4">
                               <h2 className="text-lg my-2 text-[#0f3bc0]">Admin's Comments</h2>
                                 <ol className="flex flex-col gap-2">
-                                    {comments?.map((item, idx) => (
+                                    {comments.map((item, idx) => (
                                         <li key={idx} className="text-gray-800">-- {item.comment}</li>
                                     ))}
                                     <li className="mt-2 text-gray-500 text-xs">new update...</li>

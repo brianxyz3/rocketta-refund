@@ -9,9 +9,9 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
     const [isUpdatingApi, setIsUpdatingApi] = useState(false);
 
     const headerObj = {
-        authorization: user?.token,
-        id: user?.id,
-        admin: user?.isAdmin,
+        authorization: user.token,
+        id: user.id,
+        admin: user.isAdmin,
         "Content-Type": "application/json",
     }
 

@@ -24,14 +24,14 @@ const CasesPage = () => {
     const navigate = useNavigate();
 
     const headerObj = {
-        authorization: currentUser?.token,
-        id: currentUser?.id,
-        admin: currentUser?.isAdmin,
+        authorization: currentUser.token,
+        id: currentUser.id,
+        admin: currentUser.isAdmin,
         "Content-Type": "application/json",
     }
 
     useEffect(() => {
-        if (!currentUser?.isAdmin) navigate("/");
+        if (!currentUser.isAdmin) navigate("/");
         const onLoad = async () => {
             try{
                 const files = await getCaseFiles(headerObj);
@@ -45,15 +45,15 @@ const CasesPage = () => {
         onLoad();
     }, []);
 
-    const closedCases = cases?.filter((file) => {
+    const closedCases = cases.filter((file) => {
         return file.isClosed === true;
     })
 
-    const openCases = cases?.filter((file) => {
+    const openCases = cases.filter((file) => {
         return file.isClosed === false;
     })
 
-    const activeCases = cases?.filter((file) => {
+    const activeCases = cases.filter((file) => {
         return file.isActiveInvestigation === true;
     })
 

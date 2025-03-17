@@ -67,7 +67,7 @@ const ConsultationForm = () => {
         setIsUpdatingApi(true);
         try {
             const res = await submitCaseFile(data);
-            res?._id ?
+            res._id ?
                 toast.success("Case File Successfully Submitted")
                 : toast.error("Case File Submit Unsuccessful, Try Again");
             reset();

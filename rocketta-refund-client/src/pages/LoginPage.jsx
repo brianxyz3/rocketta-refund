@@ -29,7 +29,7 @@ const LoginPage = () => {
         setIsLoading(true);
         try {
             const user = await logInWithEmailAndPassword(data);
-            if (user?.token) {
+            if (user && user.token) {
                 toast.success("Welcome Back");
                 setTimeout(() => (location.assign(originLocation + "/")), 1000)
             } else {
