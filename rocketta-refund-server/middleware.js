@@ -19,11 +19,13 @@ const sanitizeCaseFile = (req, res, next) => {
 
 const sanitizeUser = (req, res, next) => {
   try {
-    const user = req.body;
-    user.firstName = validator.escape(req.body.firstName);
-    user.lastName = validator.escape(req.body.lastName);
+    const user = req.body;   
     user.email = validator.normalizeEmail(req.body.email);
-    user.password = validator.escape(req.body.password);
+    if(user.firstName || user.lastName || user.password) {
+      user.firstName = validator.escape(req.body.firstName);
+      user.lastName = validator.escape(req.body.lastName);
+      user.password = validator.escape(req.body.password);
+    };
     return next();
   } catch (err) {
     console.log("error from sanitizeUser middleware: " + err);

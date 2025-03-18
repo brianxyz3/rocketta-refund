@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,7 +15,7 @@ const User = require("./models/user.js");
 const ExpressError = require("./utilities/ExpressError.js");
 const AdminComment = require("./models/adminComment.js");
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/payback";
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 const jwtSecret = process.env.JWT_SECRET || "notagoodsecret1";
 
 mongoose.connect(dbUrl);
@@ -250,6 +249,8 @@ app.post(
   sanitizeUserLogin,
   catchAsync(async (req, res) => {
     const { email, password } = req.body;
+    console.log("user logging in");
+    
     try {
       const userArr = await User.find({ email });
       const user = userArr[0];
@@ -264,12 +265,14 @@ app.post(
       if (isPassword) {
         const token = generateToken(user);
 
-        res.status(200).json({
-          token,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          id: user._id,
-        });
+        res
+          .status(200)
+          .json({
+            token,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            id: user._id,
+          });
       } else {
         throw new ExpressError(400, "Invalid login credentials");
       }
