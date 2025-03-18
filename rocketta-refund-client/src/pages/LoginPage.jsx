@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { TextField, FormControlLabel, Checkbox } from "@mui/material";
 import { IconButton, OutlinedInput, InputLabel, InputAdornment, FormControl } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import { logInWithEmailAndPassword } from "../controller/authController";
 import Spinner from "../components/Spinner";
+import { loginUser } from "../controller/apiController";
+import { useAuth } from "../authContext";
 
 const LoginPage = () => {
-    const originLocation = location.origin;
+    const navigate = useNavigate();
     const {
         handleSubmit,
         register,
@@ -18,6 +19,7 @@ const LoginPage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const {setCurrentUser, setUserLoggedIn} = useAuth();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -27,11 +29,15 @@ const LoginPage = () => {
 
     const handleLogin = async (data) => {
         setIsLoading(true);
-        try {
-            const user = await logInWithEmailAndPassword(data);
+        try {            
+            const user = await loginUser(data);
             if (user && user.token) {
+                setCurrentUser((prevUser) => (
+                    { ...prevUser, email: user.email, id: user.id, token: user.token, isAdmin: user.isAdmin }
+                ));
+                setUserLoggedIn(true);
                 toast.success("Welcome Back");
-                setTimeout(() => (location.assign(originLocation + "/")), 1000)
+                setTimeout(() => navigate("/"), 500);
             } else {
                 toast.error("Incorrect Login Details");
             }

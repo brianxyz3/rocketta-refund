@@ -7,13 +7,11 @@ const aDay = 24 * 60 * 60 * 1000;
 
 const signUpWithEmailAndPassword = async (details) => {
   const newUser = await registerUser(details);
-  await initializeUser(newUser);
   return newUser;
 };
 
 const logInWithEmailAndPassword = async (details) => {
   const user = await loginUser(details);
-  initializeUser(user);
   return user;
 };
 

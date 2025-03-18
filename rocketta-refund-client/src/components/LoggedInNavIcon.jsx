@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "../authContext";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Logout, Settings } from "@mui/icons-material";
-import { signOut } from "../controller/authController";
+// import { signOut } from "../controller/authController";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import NavTitlePopUp from "./NavTitlePopUp";
@@ -11,7 +11,7 @@ import NavTitlePopUp from "./NavTitlePopUp";
 
 const LoggedInNavIcon = ({order}) => {
   const navigate = useNavigate();
-    const { currentUser } = useAuth();
+    const { currentUser, setUserLoggedIn } = useAuth();
 
   return (
     <div className="md:flex mx-auto items-center gap-2">
@@ -36,9 +36,13 @@ const LoggedInNavIcon = ({order}) => {
         <button
           className="group relative hover:text-red-600 hover:scale-105 duration-200"
           onClick={async () => {
-            signOut();
+            // signOut();
+            setCurrentUser((prevUser) => (
+              { ...prevUser, email: "", id: "", token: "", isAdmin: false }
+            ));
+            setUserLoggedIn(false);
             toast.success("Goodbye!");
-            setTimeout(() => (navigate(0)), 1000)
+            // setTimeout(() => (navigate(0)), 1000)
           }
           }>
           <NavTitlePopUp>

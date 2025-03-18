@@ -21,16 +21,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-              <Route index element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true}/></div>}><HomePage /></Suspense>} />
-              <Route path="/about" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><AboutPage /></Suspense>} />
-              <Route path="/faq" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><Faq /></Suspense>} />
-              <Route path="/cases" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CasesPage /></Suspense>} />
-              <Route path="/cases/:id" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CaseDetailsPage /></Suspense>} />
+              <Route index element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true}/></div>}><HomePage /></Suspense>} />
+              <Route path="/about" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><AboutPage /></Suspense>} />
+              <Route path="/faq" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><Faq /></Suspense>} />
+              <Route path="/cases" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CasesPage /></Suspense>} />
+              <Route path="/cases/:id" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CaseDetailsPage /></Suspense>} />
           </Route>
           <Route element={<AuthPageLayout />}>
-              <Route path="/signup" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><SignUpPage /></Suspense>} />
-              <Route path="/login" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><LoginPage /></Suspense>} />
-              <Route path="/updateAdmin" element={<Suspense fallback={<div className="flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><AdminPage /></Suspense>} />
+              <Route path="/signup" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><SignUpPage /></Suspense>} />
+              <Route path="/login" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><LoginPage /></Suspense>} />
+              <Route path="/updateAdmin" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><AdminPage /></Suspense>} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -8,7 +8,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState({email: "", id: "", token: "", isAdmin: false});
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -17,18 +17,6 @@ const AuthProvider = ({children}) => {
     }, []);
 
 const updateUser = async () => {
-    const getUserEmail = await cookieStore.get("userEmail");
-    const getUserId = await cookieStore.get("userId");
-    const getUserToken = await cookieStore.get("token");
-    const getUserPerm = await cookieStore.get("isAdmin");
-    if (getUserEmail && getUserId) {
-        if (getUserPerm.value == "true") {
-            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, token: getUserToken.value, isAdmin: true });
-        } else if (getUserPerm.value == "false") {
-            setCurrentUser({ email: getUserEmail.value, id: getUserId.value, token: getUserToken.value, isAdmin: false });
-        }
-        setUserLoggedIn(true);
-    }
     setIsLoading(false);
 };
 
@@ -37,6 +25,8 @@ const updateUser = async () => {
         currentUser,
         userLoggedIn,
         isLoading,
+        setCurrentUser,
+        setUserLoggedIn,
     }
     
 

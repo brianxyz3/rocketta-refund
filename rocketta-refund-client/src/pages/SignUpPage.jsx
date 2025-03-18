@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { TextField, FormControlLabel, Checkbox } from "@mui/material";
@@ -10,13 +10,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { signUpWithEmailAndPassword } from "../controller/authController";
 import Spinner from "../components/Spinner";
+import { useAuth } from "../authContext";
+import { registerUser } from "../controller/apiController";
 
 
 const SignUpPage = () => {
-    const originLocation = location.origin;
-
     const {
         register,
         handleSubmit,
@@ -25,7 +24,8 @@ const SignUpPage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    
+    const {setCurrentUser, setUserLoggedIn} = useAuth();
+    const navigate = useNavigate();
 
     const errorStyle = { color: "red" }
 
@@ -61,11 +61,15 @@ const SignUpPage = () => {
         try {
             if (data.password === data.confirmPassword) {
                 const user = { ...data };
-                const newUser = await signUpWithEmailAndPassword(user);
+                const newUser = await registerUser(user);
 
                 if (newUser && newUser.token) {
+                    setCurrentUser((prevUser) => (
+                        { ...prevUser, email: newUser.email, id: newUser.id, token: newUser.token, isAdmin: newUser.isAdmin }
+                    ));
+                    setUserLoggedIn(true);
                     toast.success("User Successfully Registered");
-                    setTimeout(() => (location.assign(originLocation + "/")), 1500)
+                    setTimeout(() => (navigate("/")), 1500)
                 }
             } else {
                 toast.error("Password does not match");
