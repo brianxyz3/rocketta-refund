@@ -14,6 +14,10 @@ img {
 }
 
 /* GENERAL STYLE */
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     background-color: #f0f8ff;
     overflow-x: hidden;

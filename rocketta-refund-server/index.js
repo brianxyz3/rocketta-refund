@@ -264,15 +264,14 @@ app.post(
 
       if (isPassword) {
         const token = generateToken(user);
-
-        res
-          .status(200)
-          .json({
-            token,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            id: user._id,
-          });
+        
+        res.status(200)
+        .json({
+          token,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          id: user._id,
+        });
       } else {
         throw new ExpressError(400, "Invalid login credentials");
       }

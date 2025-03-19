@@ -3,56 +3,37 @@ import {
   loginUser,
 } from "../controller/apiController";
 
-const aDay = 24 * 60 * 60 * 1000;
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 100).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; Secure; SameSite=Lax;`
+}
 
 const signUpWithEmailAndPassword = async (details) => {
   const newUser = await registerUser(details);
+  initializeUser(newUser);
   return newUser;
 };
 
 const logInWithEmailAndPassword = async (details) => {
   const user = await loginUser(details);
+  initializeUser(user);
   return user;
 };
 
-const signOut = () => initializeUser(null);
+const signOut = () => {
+  const splitCookie = document.cookie.split(";");
+  splitCookie.forEach((cookie) => {
+    const [name] = cookie.trim().split("=");
+    setCookie(name, "", -100);
+  });
+};
 
 const initializeUser = async (user) => {
   if (user && user.token) {
-    await cookieStore.set({
-      name: "token",
-      value: user.token,
-      secure: true,
-      httpOnly: true,
-      expires: Date.now() + aDay,
-    });
-
-    await cookieStore.set({
-      name: "userId",
-      value: user.id,
-      expires: Date.now() + aDay,
-    });
-
-    await cookieStore.set({
-      name: "userEmail",
-      value: user.email,
-      secure: true,
-      httpOnly: true,
-      expires: Date.now() + aDay,
-    });
-
-    await cookieStore.set({
-      name: "isAdmin",
-      value: user.isAdmin,
-      secure: true,
-      httpOnly: true,
-      expires: Date.now() + aDay,
-    });
-  } else {
-    await cookieStore.delete("token");
-    await cookieStore.delete("userEmail");
-    await cookieStore.delete("userId");
-    await cookieStore.delete("isAdmin");
+    setCookie("token", user.token, 2);
+    setCookie("email", user.email, 2);
+    setCookie("id", user.id, 2);
+    setCookie("isAdmin", user.isAdmin, 2);
   }
 };
 

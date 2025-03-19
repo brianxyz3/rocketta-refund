@@ -6,8 +6,8 @@ import { IconButton, OutlinedInput, InputLabel, InputAdornment, FormControl } fr
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import { loginUser } from "../controller/apiController";
 import { useAuth } from "../authContext";
+import { logInWithEmailAndPassword } from "../controller/authController";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -30,12 +30,13 @@ const LoginPage = () => {
     const handleLogin = async (data) => {
         setIsLoading(true);
         try {            
-            const user = await loginUser(data);
+            const user = await logInWithEmailAndPassword(data);
             if (user && user.token) {
                 setCurrentUser((prevUser) => (
                     { ...prevUser, email: user.email, id: user.id, token: user.token, isAdmin: user.isAdmin }
                 ));
                 setUserLoggedIn(true);
+
                 toast.success("Welcome Back");
                 setTimeout(() => navigate("/"), 500);
             } else {

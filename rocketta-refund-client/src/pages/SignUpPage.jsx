@@ -12,7 +12,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Spinner from "../components/Spinner";
 import { useAuth } from "../authContext";
-import { registerUser } from "../controller/apiController";
+import { signUpWithEmailAndPassword } from "../controller/authController";
 
 
 const SignUpPage = () => {
@@ -61,7 +61,7 @@ const SignUpPage = () => {
         try {
             if (data.password === data.confirmPassword) {
                 const user = { ...data };
-                const newUser = await registerUser(user);
+                const newUser = await signUpWithEmailAndPassword(user);
 
                 if (newUser && newUser.token) {
                     setCurrentUser((prevUser) => (
@@ -69,7 +69,7 @@ const SignUpPage = () => {
                     ));
                     setUserLoggedIn(true);
                     toast.success("User Successfully Registered");
-                    setTimeout(() => (navigate("/")), 1500)
+                    setTimeout(() => (navigate("/")), 700)
                 }
             } else {
                 toast.error("Password does not match");
