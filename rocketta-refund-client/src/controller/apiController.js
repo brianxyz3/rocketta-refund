@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:8000";
+const apiUrl = "https://rocketta-refund.onrender.com";
 
 const submitCaseFile = async (newCase) => {
   try {

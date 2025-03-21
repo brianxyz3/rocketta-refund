@@ -15,7 +15,7 @@ const User = require("./models/user.js");
 const ExpressError = require("./utilities/ExpressError.js");
 const AdminComment = require("./models/adminComment.js");
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/payback";
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 const jwtSecret = process.env.JWT_SECRET || "notagoodsecret1";
 
 mongoose.connect(dbUrl);
