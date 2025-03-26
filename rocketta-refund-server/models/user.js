@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  caseFiles:[{
+    type: Schema.Types.ObjectId,
+    ref: "UserCaseFile"
+  }]
 });
 
 module.exports = mongoose.model("User", UserSchema);

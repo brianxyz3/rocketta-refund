@@ -58,6 +58,7 @@ app.post(
   sanitizeCaseFile,
   catchAsync(async (req, res) => {
     try {
+      const {id} = req.headers;
       const {
         firstName,
         lastName,
@@ -67,6 +68,7 @@ app.post(
         description,
       } = req.body;
       const newCaseFile = new UserCaseFile({
+        postedBy: id,
         firstName,
         lastName,
         contactPhone,
@@ -74,9 +76,13 @@ app.post(
         lostAmount,
         description,
       });
-      const caseFile = await newCaseFile.save();
-      console.log(caseFile);
-      res.status(201).json(caseFile);
+      const user = await User.findById(id);
+      if (user) {
+        const caseFile = await newCaseFile.save();
+        user.caseFiles.push(caseFile._id);
+        await user.save();
+        res.status(201).json(caseFile);
+      }
     } catch (err) {
       console.log(err);
       throw new ExpressError(500, "An error occurred, " + err.message);
@@ -114,6 +120,7 @@ app.post(
           isAdmin: registeredUser.isAdmin,
         });
       } else {
+        res.json({ status: 400, message: "A user already exist with this email" });
         throw new ExpressError(400, "A user already exist with this email");
       }
     } catch (err) {
@@ -220,16 +227,16 @@ app.put(
 );
 
 app.post(
-  "/comments/:id",
+  "/:caseId/comments",
   checkUserAuthentication,
   checkUserAuthorization,
   catchAsync(async (req, res) => {
-    const { id } = req.params;
+    const { caseId } = req.params;
 
     try {
       const comment = new AdminComment(req.body);
       const newComment = await comment.save();
-      const caseFile = await UserCaseFile.findById(id);
+      const caseFile = await UserCaseFile.findById(caseId);
       caseFile.adminComment.push(newComment._id);
       await caseFile.save();
       if (!caseFile) throw new ExpressError(404, "User profile not found");
@@ -297,20 +304,44 @@ app.get(
 );
 
 app.get(
-  "/cases/:id",
+  "/cases/:caseId",
   checkUserAuthentication,
   checkUserAuthorization,
   catchAsync(async (req, res) => {
     try {
-      const { id } = req.params;
-      const caseFile = await UserCaseFile.findById(id);
+      const { caseId } = req.params;
+      const caseFile = await UserCaseFile.findById(caseId);
       await caseFile.populate("adminComment");
       res.status(200).json(caseFile);
     } catch (err) {
-      console.log("Error occured fetching case file data " + err);
+      console.log("Error occured in admin route fetching case file data " + err);
     }
   })
 );
+
+app.get(
+  "/:userId/cases",
+  checkUserAuthentication,
+  catchAsync(async (req, res) => {
+    try{
+      const { userId } = req.params;
+      const user = await User.findById(userId)
+        .populate("caseFiles")
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(user);
+      res.status(200).json({ history: user.caseFiles });
+    } catch (err) {
+      console.log("Error occured in user route fetching all case file data " + err);      
+    }
+    const { userId } = req.params;
+    const user = await User.findById(userId).populate("caseFiles").catch((err) => {console.log(err)});
+    console.log(user);
+    res.status(200).json({history: user.caseFiles});
+  })
+);
+
 
 app.all("*", (req, res, next) => {
   throw new ExpressError(404, "Page Not Found");
