@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { getFileData, updateCaseFile } from "../controller/apiController";
+import { getFileData, getFileForUser, updateCaseFile } from "../controller/apiController";
 import { ArrowBack } from "@mui/icons-material";
 import { useAuth } from "../authContext";
 import { toast } from "react-toastify";
 import CommentForm from "../components/CommentForm";
 import Loader from "../components/Loader";
+import UserCaseStatusMessage from "../components/UserCaseStatusMessage";
 
 
 const CaseDetailsPage = () => {
@@ -28,7 +29,7 @@ const CaseDetailsPage = () => {
         if (!userLoggedIn) navigate("/");
         const getFile = async () => {
             try{
-            const res = await getFileData(id, headerObj);
+            const res = await getFileData(headerObj, id);
             setComments([...res.adminComment]);            
             return setFileData({...res});
             } catch(err){
@@ -40,6 +41,21 @@ const CaseDetailsPage = () => {
         getFile();
     }, []);
 
+    !currentUser.isAdmin && useEffect(() => {
+        if (!userLoggedIn) navigate("/");
+        const getFile = async () => {
+        try {
+            const userId = currentUser.id
+            const res = await getFileForUser(headerObj, userId, id);
+            return setFileData({ ...res });
+        } catch (err) {
+            return console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
+        }
+        getFile();
+    }, []);
 
     const updateComments = (newComment) => {
         setComments((currData) => (
@@ -171,7 +187,19 @@ const CaseDetailsPage = () => {
                             </div>
                     </aside>
                     // Render for Client use
-                    : <aside>
+                    : <aside className="h-fit flex flex-col gap-6 sticky top-20">
+                                      <div className="p-6 bg-gradient-to-t to-[#112152] from-white via-[#ccd6f9] rounded-lg">
+                                <div className="mx-auto text-black">
+                                    {fileData.isActiveInvestigation ? 
+                                    <UserCaseStatusMessage style="text-yellow-300" title="Currently Under Investigation" msg="Our best investigators and financial experts are working tirelessly on your case. A rockettarefund staff will be in constant communication with you to keep you up to date on the progress of the investigation."/>
+                                    : fileData.isClosed ?
+                                    <UserCaseStatusMessage style="text-green-300" title="Case Closed!" msg="We hope rocketarefund was able to help you find closure. Our staff appreciates your cooperation. Thanks for choosing Rockettarefund. Stay Safe Out There!"/>
+                                    : <UserCaseStatusMessage style="text-red-200" title="We'll Attend to You Soon" msg="Kindly wait, a staff member will be in contact with you soon. A rockettarefund staff will never ask for your private infomation."/>}
+                                </div>
+                            </div>
+                            {/* <div>
+                                {!fileData.isClosed && <button className="bg-[#0f3bc0] font-bold text-stone-50 w-1/2 md:w-full py-1 rounded-lg" onClick={closeCase}>Edit Case</button>}
+                            </div> */}
                         </aside>
                     }
                     </div>

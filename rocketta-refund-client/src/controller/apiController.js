@@ -28,7 +28,7 @@ const getCaseFiles = async (headerObj) => {
   }
 };
 
-const getUserCases = async (headerObj, userId) => {
+const getCasesForUser = async (headerObj, userId) => {
   try {
     const res = await fetch(`${apiUrl}/${userId}/cases`, {
       method: "GET",
@@ -41,7 +41,20 @@ const getUserCases = async (headerObj, userId) => {
   }
 };
 
-const getFileData = async (id, headerObj) => {
+const getFileForUser = async (headerObj, userId, caseId) => {
+  try {
+    const res = await fetch(`${apiUrl}/${userId}/cases/${caseId}`, {
+      method: "GET",
+      headers: headerObj,
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    return console.log(`An error occurred, ${err}`);
+  }
+};
+
+const getFileData = async (headerObj, id) => {
   try {
     const res = await fetch(`${apiUrl}/cases/${id}`, {
       method: "GET",
@@ -150,7 +163,8 @@ export {
   updateUserPermission,
   getCaseFiles,
   getFileData,
-  getUserCases,
+  getCasesForUser,
+  getFileForUser,
   updateCaseFile,
   addAdminComment,
 };
