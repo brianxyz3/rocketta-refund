@@ -42,6 +42,10 @@ const UserCaseFileSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  postedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
   adminComment: [{
     type: Schema.Types.ObjectId,
     ref: "AdminComment"

@@ -42,7 +42,6 @@ const checkUserAuthentication = (req, res, next) => {
     if (token) {
       jwt.verify(token, jwtSecret);
       console.log("ran authentication middleware");
-      
       next();
     } else {
       throw new ExpressError(401, "Invalid user token");
@@ -335,13 +334,24 @@ app.get(
     } catch (err) {
       console.log("Error occured in user route fetching all case file data " + err);      
     }
-    const { userId } = req.params;
-    const user = await User.findById(userId).populate("caseFiles").catch((err) => {console.log(err)});
-    console.log(user);
-    res.status(200).json({history: user.caseFiles});
   })
 );
 
+app.get(
+  "/:userId/cases/:caseId",
+  checkUserAuthentication,
+  catchAsync(async (req, res) => {
+    try{
+      const { userId, caseId } = req.params;
+      const file = await UserCaseFile.findById(caseId);
+      if (file.postedBy == userId) {
+        res.status(200).json(file);
+      };
+    } catch (err) {
+      console.log("Error occured in user route fetching case file data " + err);      
+    }
+  })
+);
 
 app.all("*", (req, res, next) => {
   throw new ExpressError(404, "Page Not Found");
