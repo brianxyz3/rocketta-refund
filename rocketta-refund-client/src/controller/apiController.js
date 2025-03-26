@@ -1,12 +1,11 @@
-const apiUrl = "https://rocketta-refund.onrender.com";
+const apiUrl = "http://localhost:3000";
+// https://rocketta-refund.onrender.com
 
-const submitCaseFile = async (newCase) => {
+const submitCaseFile = async (headerObj, newCase) => {
   try {
     const res = await fetch(`${apiUrl}/newCase`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headerObj,
       body: JSON.stringify(newCase),
     });
     const data = await res.json();
@@ -19,6 +18,19 @@ const submitCaseFile = async (newCase) => {
 const getCaseFiles = async (headerObj) => {
   try {
     const res = await fetch(`${apiUrl}/cases`, {
+      method: "GET",
+      headers: headerObj,
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    return console.log(`An error occurred, ${err}`);
+  }
+};
+
+const getUserCases = async (headerObj, userId) => {
+  try {
+    const res = await fetch(`${apiUrl}/${userId}/cases`, {
       method: "GET",
       headers: headerObj,
     });
@@ -100,9 +112,9 @@ const updateCaseFile = async (id, newInfo, headerObj) => {
   }
 };
 
-const addAdminComment = async (id, newComment, headerObj) => {
+const addAdminComment = async (caseId, newComment, headerObj) => {
   try {
-    const res = await fetch(`${apiUrl}/comments/${id}`, {
+    const res = await fetch(`${apiUrl}/${caseId}/comments`, {
       method: "POST",
       headers: headerObj,
       body: JSON.stringify(newComment),
@@ -138,6 +150,7 @@ export {
   updateUserPermission,
   getCaseFiles,
   getFileData,
+  getUserCases,
   updateCaseFile,
   addAdminComment,
 };

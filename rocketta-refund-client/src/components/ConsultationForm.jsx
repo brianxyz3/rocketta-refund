@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { submitCaseFile } from "../controller/apiController"
 import { useState } from "react";
 import Loader from "./Loader";
+import { useAuth } from "../authContext";
 
 
 
@@ -43,9 +44,17 @@ const ConsultationForm = () => {
         formState: { errors },
     } = useForm({ mode: "onChange" });
 
+    const {currentUser} = useAuth();
+
+    const headerObj = {
+        authorization: currentUser.token,
+        id: currentUser.id,
+        "Content-Type": "application/json",
+    }
+
     const errorStyle = { color: "red" };
 
-    const [isUpdatingApi, setIsUpdatingApi] = useState(false);
+    const [isUpdatingServer, setIsUpdatingServer] = useState(false);
     
 
     const validateForm = {
@@ -64,9 +73,9 @@ const ConsultationForm = () => {
     };
 
     const onSubmit = async (data) => {
-        setIsUpdatingApi(true);
+        setIsUpdatingServer(true);
         try {
-            const res = await submitCaseFile(data);
+            const res = await submitCaseFile(headerObj, data);
             res._id ?
                 toast.success("Case File Successfully Submitted")
                 : toast.error("Case File Submit Unsuccessful, Try Again");
@@ -74,7 +83,7 @@ const ConsultationForm = () => {
         } catch (err) {
             toast.error("Case File Submit Unsuccessful, Try Again");
         } finally {
-            setIsUpdatingApi(false);
+            setIsUpdatingServer(false);
         }
     }
 
@@ -135,8 +144,8 @@ const ConsultationForm = () => {
                     defaultValue=""
                 />
             </div>
-            <button disabled={isUpdatingApi} className="bg-yellow-400 disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:cursor-not-allowed text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200">
-                {isUpdatingApi ? (<Loader loading={isUpdatingApi} size={15} />) : "Get a free consultation"}
+            <button disabled={isUpdatingServer} className="bg-yellow-400 disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:cursor-not-allowed text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200">
+                {isUpdatingServer ? (<Loader loading={isUpdatingServer} size={15} />) : "Get a free consultation"}
             </button>
         </form>
 

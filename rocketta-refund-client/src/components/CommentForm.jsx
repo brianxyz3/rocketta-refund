@@ -6,7 +6,7 @@ import Loader from "./Loader";
 
 const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
     const [formData, setFormData] = useState({comment: ""});
-    const [isUpdatingApi, setIsUpdatingApi] = useState(false);
+    const [isUpdatingServer, setIsUpdatingServer] = useState(false);
 
     const headerObj = {
         authorization: user.token,
@@ -17,7 +17,7 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
-        setIsUpdatingApi(true);
+        setIsUpdatingServer(true);
         try {
             const res = await addAdminComment(id, formData, headerObj).catch((err) => console.log(err));
             if (!res.status == 200) toast.error("Something went wrong. Try again.");
@@ -27,7 +27,7 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
         } catch(err) {
             return console.log(err);
         } finally {
-            setIsUpdatingApi(false)
+            setIsUpdatingServer(false)
         }
     }
     
@@ -48,9 +48,9 @@ const CommentForm = ({ id, updateComments, isActiveInvestigation, user }) => {
                       ))}
                   />
                   <button
-                      disabled={!isActiveInvestigation || isUpdatingApi}
+                      disabled={!isActiveInvestigation || isUpdatingServer}
                       className={`${isActiveInvestigation ? "bg-blue-400 hover:bg-white hover:text-blue-700" : "bg-gray-700 cursor-not-allowed"} font-bold border border-blue-700 text-white w-full lg:w-auto py-0.5 px-1.5 rounded-lg duration-200`}>
-                      {isUpdatingApi ? (<Loader loading={isUpdatingApi} size={15} />) :
+                      {isUpdatingServer ? (<Loader loading={isUpdatingServer} size={15} />) :
                       "Add Comment"
                     }
                   </button>

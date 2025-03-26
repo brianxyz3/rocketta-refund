@@ -70,6 +70,8 @@ const SignUpPage = () => {
                     setUserLoggedIn(true);
                     toast.success("User Successfully Registered");
                     setTimeout(() => (navigate("/")), 700)
+                } else if (newUser.status == 400) {
+                    toast.error(newUser.message);
                 }
             } else {
                 toast.error("Password does not match");

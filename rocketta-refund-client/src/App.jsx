@@ -13,6 +13,7 @@ import AuthPageLayout from "./layout/AuthPageLayout";
 import AdminPage from "./pages/AdminPage";
 import AuthProvider from "./authContext";
 import Spinner from "./components/Spinner";
+import UserHistoryPage from "./pages/UserHistoryPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/about" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><AboutPage /></Suspense>} />
               <Route path="/faq" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><Faq /></Suspense>} />
               <Route path="/cases" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CasesPage /></Suspense>} />
+              <Route path="/userHistory" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><UserHistoryPage /></Suspense>} />
               <Route path="/cases/:id" element={<Suspense fallback={<div className="h-dvh flex items-center justify-center "><Spinner size={150} loading={true} /></div>}><CaseDetailsPage /></Suspense>} />
           </Route>
           <Route element={<AuthPageLayout />}>
