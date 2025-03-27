@@ -10,6 +10,7 @@ import { submitCaseFile } from "../controller/apiController"
 import { useState } from "react";
 import Loader from "./Loader";
 import { useAuth } from "../authContext";
+import { useNavigate } from "react-router";
 
 
 
@@ -44,7 +45,9 @@ const ConsultationForm = () => {
         formState: { errors },
     } = useForm({ mode: "onChange" });
 
-    const {currentUser} = useAuth();
+    const navigate = useNavigate();
+
+    const {currentUser, userLoggedIn} = useAuth();
 
     const headerObj = {
         authorization: currentUser.token,
@@ -73,17 +76,21 @@ const ConsultationForm = () => {
     };
 
     const onSubmit = async (data) => {
-        setIsUpdatingServer(true);
-        try {
-            const res = await submitCaseFile(headerObj, data);
-            res._id ?
-                toast.success("Case File Successfully Submitted")
-                : toast.error("Case File Submit Unsuccessful, Try Again");
-            reset();
-        } catch (err) {
-            toast.error("Case File Submit Unsuccessful, Try Again");
-        } finally {
-            setIsUpdatingServer(false);
+        if(userLoggedIn) {
+            setIsUpdatingServer(true);
+            try {
+                const res = await submitCaseFile(headerObj, data);
+                res._id ?
+                    toast.success("Case File Successfully Submitted")
+                    : toast.error("Case File Submit Unsuccessful, Try Again");
+                reset();
+            } catch (err) {
+                toast.error("Case File Submit Unsuccessful, Try Again");
+            } finally {
+                setIsUpdatingServer(false);
+            }
+        } else {
+            return navigate("/login");
         }
     }
 
@@ -144,8 +151,11 @@ const ConsultationForm = () => {
                     defaultValue=""
                 />
             </div>
-            <button disabled={isUpdatingServer} className="bg-yellow-400 disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:cursor-not-allowed text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200">
-                {isUpdatingServer ? (<Loader loading={isUpdatingServer} size={15} />) : "Get a free consultation"}
+            <button disabled={isUpdatingServer || !userLoggedIn} className={`bg-yellow-400 disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:cursor-not-allowed text-gray-900 text-xl py-3 font-bold hover:scale-95 hover:rounded-lg hover:translate-y-2 hover:shadow-md duration-200`}>
+                {isUpdatingServer ? (<Loader loading={isUpdatingServer} size={15} />) 
+                :  userLoggedIn ? 
+                "Get a free consultation"
+                : "Sign in to submit case"}
             </button>
         </form>
 

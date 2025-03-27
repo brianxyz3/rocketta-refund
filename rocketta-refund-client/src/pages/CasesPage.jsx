@@ -130,9 +130,9 @@ const CasesPage = () => {
                         <h4 className="text-xl ps-2 lg:text-3xl">{cases.length}</h4>
                         <div className="text-xs sm:text-sm lg:text-lg">
                             <p className="ps-2">Keys</p>
-                            <p className="ps-4 closed_case">{closedCases.length} Closed Cases</p>
-                            <p className="ps-4 open_case">{cases.length - closedCases.length} Open Cases</p>
-                            <p className="ps-4 active_case">{activeCases.length} Active Cases</p>
+                            <p className="ps-4 closed_case">Closed Cases</p>
+                            <p className="ps-4 open_case">Open Cases</p>
+                            <p className="ps-4 active_case">Active Cases</p>
                         </div>
                           </div>
                         </>

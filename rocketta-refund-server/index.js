@@ -55,6 +55,7 @@ const checkUserAuthentication = (req, res, next) => {
 app.post(
   "/newCase",
   sanitizeCaseFile,
+  checkUserAuthentication,
   catchAsync(async (req, res) => {
     try {
       const {id} = req.headers;
@@ -309,8 +310,7 @@ app.get(
   catchAsync(async (req, res) => {
     try {
       const { caseId } = req.params;
-      const caseFile = await UserCaseFile.findById(caseId);
-      await caseFile.populate("adminComment");
+      const caseFile = await UserCaseFile.findById(caseId).populate("adminComment");
       res.status(200).json(caseFile);
     } catch (err) {
       console.log("Error occured in admin route fetching case file data " + err);

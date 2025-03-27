@@ -1,5 +1,4 @@
-const apiUrl = "http://localhost:3000";
-// https://rocketta-refund.onrender.com
+const apiUrl = "https://rocketta-refund.onrender.com";
 
 const submitCaseFile = async (headerObj, newCase) => {
   try {

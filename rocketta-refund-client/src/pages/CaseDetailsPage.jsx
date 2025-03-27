@@ -25,7 +25,7 @@ const CaseDetailsPage = () => {
         "Content-Type": "application/json",
     }
 
-    currentUser.isAdmin && useEffect(() => {        
+    currentUser.isAdmin && useEffect(() => {                
         if (!userLoggedIn) navigate("/");
         const getFile = async () => {
             try{
@@ -114,7 +114,7 @@ const CaseDetailsPage = () => {
     
   return (
     <main>
-          {currentUser.isAdmin || userLoggedIn &&
+          { userLoggedIn &&
         <>
       <section>
             <div className="container m-auto py-6 px-6">
