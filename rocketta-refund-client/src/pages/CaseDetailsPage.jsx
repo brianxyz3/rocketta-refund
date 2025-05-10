@@ -25,13 +25,18 @@ const CaseDetailsPage = () => {
         "Content-Type": "application/json",
     }
 
-    currentUser.isAdmin && useEffect(() => {                
+    useEffect(() => {                
         if (!userLoggedIn) navigate("/");
         const getFile = async () => {
             try{
-            const res = await getFileData(headerObj, id);
-            setComments([...res.adminComment]);            
-            return setFileData({...res});
+                if(!currentUser.isAdmin) {
+                    const userId = currentUser.id
+                    const res = await getFileForUser(headerObj, userId, id);
+                    return setFileData({ ...res });
+                }
+                const res = await getFileData(headerObj, id);
+                setComments([...res.adminComment]);            
+                return setFileData({...res});
             } catch(err){
                 return console.log(err);
             } finally {
@@ -41,21 +46,6 @@ const CaseDetailsPage = () => {
         getFile();
     }, []);
 
-    !currentUser.isAdmin && useEffect(() => {
-        if (!userLoggedIn) navigate("/");
-        const getFile = async () => {
-        try {
-            const userId = currentUser.id
-            const res = await getFileForUser(headerObj, userId, id);
-            return setFileData({ ...res });
-        } catch (err) {
-            return console.log(err);
-        } finally {
-            setIsLoading(false);
-        }
-        }
-        getFile();
-    }, []);
 
     const updateComments = (newComment) => {
         setComments((currData) => (

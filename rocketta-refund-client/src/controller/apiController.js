@@ -1,4 +1,6 @@
 const apiUrl = "https://rocketta-refund.onrender.com";
+// const apiUrl = "http://localhost:3000";
+
 
 const submitCaseFile = async (headerObj, newCase) => {
   try {
@@ -146,7 +148,8 @@ const loginUser = async (user) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
-    });
+    }).catch((err) => (console.log(err)))
+    
     const data = await res.json();    
     return data;
   } catch (err) {

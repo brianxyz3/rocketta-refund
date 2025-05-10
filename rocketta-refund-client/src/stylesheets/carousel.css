@@ -12,6 +12,7 @@
 }
 
 .carousel_inner {
+    margin: 0 auto;
     justify-self: center;
     align-items: center;
     max-width: var(--WIDTH);

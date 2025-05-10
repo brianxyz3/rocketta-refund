@@ -9,7 +9,7 @@ import LoggedOutNavIcon from "./LoggedOutNavIcon";
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { userLoggedIn, currentUser } = useAuth();
-    const { isAdmin, id } = currentUser;
+    const { isAdmin } = currentUser;
 
 
     const navItems = [
@@ -88,11 +88,11 @@ const Navbar = () => {
                         }
                     </button> */}
 
-                        <button className={`transition duration-500 flex p-1 size-8 justify-center items-center md:hidden text-white bg-blue-600 rounded-md hover:hover:bg-blue-500 hover:border ${isOpen ? "rotate-180" : "-rotate-180"}`} onClick={toggleNavbar}>
-                        <div className={`w-full flex flex-col ${isOpen ? "mr-1" : "gap-1"}`}>
-                            <div className={`w-6 h-1 bg-white rounded-lg transition ${isOpen && "w-7 -rotate-45 origin-center"}`}></div>
-                            <div className={`w-6 h-1 bg-white rounded-lg transition ${isOpen && "w-7 rotate-45 origin-center -mt-1"}`}></div>
-                            <div className={`w-6 h-1 bg-white rounded-lg ${isOpen && "hidden"}`}></div>
+                    <button className={`flex p-1 size-8 justify-center items-center md:hidden text-white bg-blue-600 rounded-md hover:hover:bg-blue-500 hover:border`} onClick={toggleNavbar}>
+                        <div className={`w-full flex flex-col gap-1`}>
+                            <div className={`h-[4px] bg-white duration-500 ms-auto ${isOpen ? "w-3" : "w-6"}`}></div>
+                            <div className={`h-[4px] bg-white duration-500 ms-auto ${isOpen ? "w-4" : "w-6"}`}></div>
+                            <div className={`h-[4px] bg-white duration-500 ms-auto ${isOpen ? "w-5" : "w-6"}`}></div>
                         </div>
                     </button>
                 </div>
